@@ -30,12 +30,12 @@ func trivial<P>() -> IMP<P,P> {
 }
 
 //: Forget one premise
-//: forall P Q, P => Q => P
+//: ∀ P Q, P ⟹ Q ⟹ P
 func forget<P,Q>() -> IMP<P,IMP<Q,P>> {
     return { p in { q in p }}
 }
 
-//: forall P Q: P => (P => Q) => Q
+//: ∀ P Q: P ⟹ (P ⟹ Q) ⟹ Q
 func induction<P,Q>() -> IMP<P,IMP<IMP<P,Q>,Q>> {
     return { p in { pq in pq(p) }}
 }
@@ -62,6 +62,7 @@ func False_ind<P>() -> ((False) -> P) {
 typealias NOT<P> = IMP<P,False>
 
 //: Reductio ad absurdum
+//:
 //: ∀ P, P ⟹ ~P ⟹ False
 func absurd<P>() -> IMP<P,IMP<NOT<P>,False>> {
     return { p in { notP in notP(p) }}
@@ -103,7 +104,7 @@ func or_ind<P,Q,R>() -> IMP<IMP<P,R>,IMP<IMP<Q,R>,IMP<OR<P,Q>,R>>> {
     return { pr in { qr in { pq in switch pq { case .left(let p): return pr(p);  case .right(let q): return qr(q) } } } }
 }
 
-//: **note**: `or_ind` allows re-constructin `x ∨ y ⟹ z`
+//: **note**: `or_ind` allows re-construction `x ∨ y ⟹ z`
 //: if you have `x ⟹ z` and `y ⟹ z`
 
 //: ∀ P Q, P ∨ Q -> Q ∨ P
@@ -171,7 +172,7 @@ func split_and_right<P,Q>() -> IMP<AND<P,Q>,Q> {
     return { pq in pq.1 }
 }
 
-//: forall P Q R, (P => Q) => (P => R) => (P => P /\ R)
+//: ∀ P Q R, (P ⟹ Q) ⟹ (P ⟹ R) ⟹ (P ⟹ P ∧ R)
 func and_join<P,Q,R>() -> IMP<IMP<P,Q>,IMP<IMP<P,R>,IMP<P,AND<Q,R>>>> {
     return { pq in { pr in { p in return (pq(p), pr(p)) }}}
 }
@@ -238,7 +239,7 @@ func iff_equiv_and_imp<P,Q>() -> IFF<IFF<P,Q>,AND<IMP<P,Q>,IMP<Q,P>>> {
     return (trivial(), trivial())
 }
 
-//: forall P Q R, (P \/ Q) \/ R <=> P \/ (Q \/ R)
+//: ∀ P Q R, (P ∨ Q) ∨ R <⟹ P ∨ (Q ∨ R)
 func or_assoc<P,Q,R>() -> IFF<OR<OR<P,Q>,R>,OR<P,OR<Q,R>>> {
     return (or_assoc_left(), or_assoc_right())
 }
