@@ -123,7 +123,7 @@ func or_ind<P,Q,R>() -> IMP<IMP<P,R>,IMP<IMP<Q,R>,IMP<OR<P,Q>,R>>> {
 
 //: `∀ P Q, P ∨ Q -> Q ∨ P`
 func or_comm<P,Q>() -> IMP<OR<P,Q>,OR<Q,P>> {
-    return { (pq : OR<P,Q>) in
+    return { pq in
         switch pq {
         case .left(let p): return .right(p)
         case .right(let q): return .left(q)
@@ -133,7 +133,7 @@ func or_comm<P,Q>() -> IMP<OR<P,Q>,OR<Q,P>> {
 
 //: `∀ P Q R, (P ∨ Q) ∨ R ⟹ P ∨ (Q ∨ R)`
 func or_assoc_left<P,Q,R>() -> IMP<OR<OR<P,Q>,R>,OR<P,OR<Q,R>>> {
-    return { (pqr: OR<OR<P,Q>,R>) in
+    return { pqr in
         switch pqr {
         case .left(let pq):
             switch pq {
