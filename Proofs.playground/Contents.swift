@@ -36,8 +36,8 @@ typealias IMP<P,Q> = (P) -> Q
 
 //: ### Trivial theorem
 //: `∀ P, P ⟹ P`
-func trivial<P>() -> IMP<P,P> {
-    return { p in p }
+func trivial<P>(p : P) -> P {
+    return p
 }
 
 //: ### Forget one premise
@@ -224,7 +224,7 @@ typealias IFF<P,Q> = AND<IMP<P,Q>,IMP<Q,P>>
 
 //: `∀ P, P ⟺ P`
 func iff_refl<P>() -> IFF<P,P> {
-    return (trivial(),trivial())
+    return (trivial,trivial)
 }
 
 //: `∀ P Q R, (P ⟺ Q) ⟹ (Q ⟺ R) ⟹ (P ⟺ R)`
@@ -241,14 +241,14 @@ func iff_comm<P,Q>() -> IMP<IFF<P,Q>,IFF<Q,P>> {
 
 //: `∀ P Q, (P ⟺ Q) ⟹ (P ⟹ Q) ∧ (Q ⟹ P)`
 func iff_and<P,Q>() -> IMP<IFF<P,Q>,AND<IMP<P,Q>,IMP<Q,P>>> {
-    // and is this one…
-    return trivial()
+    // as is this one…
+    return trivial
 }
 
 //: `∀ P Q, (P ⟺ Q) ⟺ (P ⟹ Q) ∧ (Q ⟹ P)`
 func iff_equiv_and_imp<P,Q>() -> IFF<IFF<P,Q>,AND<IMP<P,Q>,IMP<Q,P>>> {
     // as is this one…
-    return (trivial(), trivial())
+    return (trivial, trivial)
 }
 
 //: `∀ P Q R, (P ∨ Q) ∨ R <⟹ P ∨ (Q ∨ R)`
