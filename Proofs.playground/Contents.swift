@@ -42,6 +42,8 @@ func trivial<P>(p : P) -> P {
 
 //: ### Forget one premise
 //: `∀ P Q, P ⟹ Q ⟹ P`
+//:
+//: **Note** that `P ⟹ Q ⟹ R` should be read `P ⟹ (Q ⟹ R)`. If `P` is proven, then if `Q` is also proven then you proved `R`.
 func forget<P,Q>() -> IMP<P,IMP<Q,P>> {
     return { p in { q in p }}
 }
