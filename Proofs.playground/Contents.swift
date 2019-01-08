@@ -1,7 +1,7 @@
 //: ## IF IT BUILDS, IT'S PROVEN!
 //: *(only rule: don't use the standard lib)*
 //:
-//: Proving a "proposition" `P` is equivalent to write some code that is able to create an element of type `P`.
+//: Proving a "proposition" `P` is equivalent to writing some code that is able to create an element of type `P`.
 //:
 //: So if you can write any of the following declarations and have Swift be able to compile with no errors and warnings, you "proved" `P`.
 //: ```swift
