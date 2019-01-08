@@ -12,7 +12,7 @@
 //: ```swift
 //: func f(_: P) -> Q {}
 //: ```
-//: then, you "proved" `P ⟹ Q`.
+//: then, you "proved" `P ⟹ Q` since you can construct an element of `Q` from any element of `P` using this function.
 //:
 //: **Note** that the actual implementation is irrelevant as long as it compiles.
 //: As for a proof: how long or inneficient it is, if it is correct, it's enough.
