@@ -15,7 +15,7 @@
 //: then, you "proved" `P ⟹ Q` since you can construct an element of `Q` from any element of `P` using this function.
 //:
 //: **Note** that the actual implementation is irrelevant as long as it compiles.
-//: As for a proof: how long or inneficient it is, if it is correct, it's enough.
+//: Same as a proof: how long, unreadable or inneficient it is, if it is correct, the important thing is that the result has been proven.
 //:
 // we might need that
 func compose<P,Q,R>(_ f : @escaping (Q) -> R, _ g : @escaping (P) -> Q) -> ((P) -> R) {
@@ -285,6 +285,28 @@ func not_not_P_imp_P<P>() -> IMP<DECIDABLE<P>,IMP<NOT<NOT<P>>,P>> {
 //:
 //: Swift Type System only allows dependent type through generics which act as universal quantifiers.
 //:
+//: Also there is one tiny litte **second rule** to the game: though the implementation does not really matter, still **it must** end**.
 //:
-//: ## TO BE CONTINUED
+//: You can't write functions that run forever. Alas (of course), the Swift compiler can't enforce this as this can't be decided. 😔
+//: That's why real proof assistants enforces rules on what "programs" you can't write that guarantees that they will always end.
+//:
+//: With a fully Turing complete language like Swift, you can do dirty tricks like:
+//:
+//: ```swift
+//: func everything_is_possible<P>() -> P {
+//:    return everything_is_possible()
+//: }
+//: ```
+//:
+//: though this particular trick is detected by the Swift compiler which emits a warning.
+//:
+//: "Fortunately", this one does not:
+
+func everything_is_possible<P>() -> P {
+    while(true) {
+    }
+}
+
+//: #### so yes, anything is possible!
+
 
