@@ -28,9 +28,14 @@ enum True {
     case true_is_true
 }
 
+//: Indeed, we can write `let _ : True = ...`
+let _ : True = .true_is_true
+
 //: **`False`** being… false, it's pretty hard to get any element for that type
 enum False {
 }
+
+//: `switch x { }` where `x : False` covers all cases.
 
 //: Proving `P ⟹ Q` means being able to write a function `(P) -> Q` that builds
 typealias IMP<P,Q> = (P) -> Q
