@@ -301,7 +301,7 @@ func and_assoc<P,Q,R>() -> IFF<AND<AND<P,Q>,R>,AND<P,AND<Q,R>>> {
 typealias DECIDABLE<P> = OR<P,NOT<P>>
 
 //: `∀ P, P is decidable ⟹ ~~P ⟹ P`
-func not_not_P_imp_P<P>() -> IMP<DECIDABLE<P>,IMP<NOT<NOT<P>>,P>> {
+func decidable_not_not_P_imp_P<P>() -> IMP<DECIDABLE<P>,IMP<NOT<NOT<P>>,P>> {
     return { decP in
         switch (decP) {
         case .left(let p):
@@ -352,7 +352,7 @@ func decidable_compat_and<Q,P>() -> IMP<DECIDABLE<P>,IMP<DECIDABLE<Q>, DECIDABLE
 }
 
 //: `∀ P Q, (Q is decidable) ⟹ (~Q ⟹ ~P) ⟹ (P ⟹ Q)`
-func contrapositive_left<P,Q>() -> IMP<DECIDABLE<Q>,IMP<IMP<NOT<Q>,NOT<P>>,IMP<P,Q>>>  {
+func decidable_contrapositive_left<P,Q>() -> IMP<DECIDABLE<Q>,IMP<IMP<NOT<Q>,NOT<P>>,IMP<P,Q>>>  {
     return { decQ in
         { not_Q_imp_not_P in
             { p in
@@ -369,8 +369,8 @@ func contrapositive_left<P,Q>() -> IMP<DECIDABLE<Q>,IMP<IMP<NOT<Q>,NOT<P>>,IMP<P
 }
 
 //: `∀ P Q, (Q is decidable) ⟹ (~Q ⟹ ~P) ⟺ (P ⟹ Q)`
-func contrapositive<P,Q>() -> IMP<DECIDABLE<Q>,IFF<IMP<NOT<Q>,NOT<P>>,IMP<P,Q>>>  {
-    return { decQ in (contrapositive_left()(decQ), contrapositive_right()) }
+func decidable_contrapositive<P,Q>() -> IMP<DECIDABLE<Q>,IFF<IMP<NOT<Q>,NOT<P>>,IMP<P,Q>>>  {
+    return { decQ in (decidable_contrapositive_left()(decQ), contrapositive_right()) }
 }
 
 //: ### Beyond Swift Type System
@@ -404,7 +404,6 @@ func contrapositive<P,Q>() -> IMP<DECIDABLE<Q>,IFF<IMP<NOT<Q>,NOT<P>>,IMP<P,Q>>>
 //: ```
 //:
 //: We can use this quirk to create "axioms":
-
 func axiom<P>() -> P {
     while(true) {
     }
@@ -416,20 +415,20 @@ func axiom<P>() -> P {
 //:
 //: Still, you can use axioms to create specific theories:
 //: ### Classical Logic
-func classical_logic() {
-    
+struct classical_logic {
 //: *Excluded middle* axiom: all propositions are decidable
     func excluded_middle<P>() -> DECIDABLE<P> {
         return axiom()
     }
-    
+}
+//: With this axiom, we can add more theorems to our theory.
+extension classical_logic {
 //: `~~P ⟹ P`
-    func not_not_P_imp_P_classical<P>() -> IMP<NOT<NOT<P>>,P> {
-        return not_not_P_imp_P()(excluded_middle())
+    func not_not_P_imp_P<P>() -> IMP<NOT<NOT<P>>,P> {
+        return decidable_not_not_P_imp_P()(excluded_middle())
     }
-    
 //: `∀ P Q, (~Q ⟹ ~P) ⟺ (P ⟹ Q)`
-    func contrapositive_classical<P,Q>() -> IFF<IMP<NOT<Q>,NOT<P>>,IMP<P,Q>>  {
-        return contrapositive()(excluded_middle())
+    func contrapositive<P,Q>() -> IFF<IMP<NOT<Q>,NOT<P>>,IMP<P,Q>>  {
+        return decidable_contrapositive()(excluded_middle())
     }
 }
